@@ -5,6 +5,7 @@ import Blockchain from '../blockchain';
 import P2PService from './p2p';
 
 const { HTTP_PORT = 3000 } = process.env;
+
 const app = express();
 
 const blockchain = new Blockchain();
@@ -30,6 +31,6 @@ app.post('/mine', (req, res) => {
 });
 
 app.listen(HTTP_PORT, () => {
-  console.log(`Service HTTP:${HTTP_PORT} listening...`);
+  console.info(`Service HTTP:${HTTP_PORT} listening...`);
   p2pService.listen();
 });

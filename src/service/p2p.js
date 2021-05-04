@@ -21,11 +21,11 @@ class P2PService {
       socket.on('open', () => this.onConnection(socket));
     });
 
-    console.log(`Service ws:${P2P_PORT} listening...`);
+    console.info(`Service ws:${P2P_PORT} listening...`);
   }
 
   onConnection(socket) {
-    console.log('[ws:socket] connected.');
+    console.info('[ws:socket] connected.');
     this.sockets.push(socket);
     socket.on('message', (message) => {
       const { type, value } = JSON.parse(message);
@@ -43,7 +43,7 @@ class P2PService {
   }
 
   broadcast(type, value) {
-    console.log(`[ws:broadcast] ${type}`);
+    console.info(`[ws:broadcast] ${type}`);
     const message = JSON.stringify({ type, value });
     this.sockets.forEach((socket) => { socket.send(message); });
   }

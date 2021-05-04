@@ -1,35 +1,52 @@
 /* eslint-disable no-console */
 
 import { SHA256 } from 'crypto-js';
+import adjustDifficult from './modules/adjustDifficult';
 
+require('dotenv').config();
+
+const DIFFICULTY = 3;
 class Block {
-  constructor(timestamp, previousHash, hash, data) {
+  constructor(timestamp, previousHash, hash, data, nonce, difficulty) {
     this.timestamp = timestamp;
     this.previousHash = previousHash;
     this.hash = hash;
     this.data = data;
+    this.nonce = nonce;
+    this.difficulty = difficulty;
   }
 
   static get genesis() {
     const timestamp = (new Date(2000, 0, 1)).getTime();
-    return new this(timestamp, undefined, 'ae11ac95a4b30e1d01fb4e7843785c4929f80048366c8d7b56c6c59c5544114b', 'Data');
+    return new this(
+      timestamp, undefined, 'ccbc43ae39a917747b280d55ee918fa27069d03fc82e53f04b9fdc7dbfb2d482', 'Data', DIFFICULTY,
+    );
   }
 
   static mine(previousBlock, data) {
-    const timestamp = Date.now();
     const { hash: previousHash } = previousBlock;
-    const hash = Block.hash(timestamp, previousHash, data);
+    let timestamp;
+    let hash;
+    let nonce = 0;
+    let { difficulty } = previousBlock;
 
-    return new this(timestamp, previousHash, hash, data);
+    do {
+      timestamp = Date.now();
+      nonce += 1;
+      difficulty = adjustDifficult(previousBlock, timestamp);
+      hash = Block.hash(timestamp, previousHash, data, nonce, difficulty);
+    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
+
+    return new this(timestamp, previousHash, hash, data, nonce, difficulty);
   }
 
-  static hash(timestamp, previousHash, data) {
-    return SHA256(`${timestamp}${previousHash}${data}`).toString();
+  static hash(timestamp, previousHash, data, nonce, difficulty) {
+    return SHA256(`${timestamp}${previousHash}${data}${nonce}${difficulty}`).toString();
   }
 
   toString() {
     const {
-      timestamp, previousHash, hash, data,
+      timestamp, previousHash, hash, data, nonce, difficulty,
     } = this;
 
     const salida = `
@@ -39,12 +56,16 @@ class Block {
       previousHash: ${previousHash}
       hash:         ${hash}
       data:         ${data}
+      nonce:        ${nonce}
+      difficulty:   ${difficulty}
     `;
 
-    console.log(salida);
+    console.info(salida);
 
     return salida;
   }
 }
+
+export { DIFFICULTY };
 
 export default Block;
