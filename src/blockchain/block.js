@@ -12,7 +12,7 @@ class Block {
 
   static get genesis() {
     const timestamp = (new Date(2000, 0, 1)).getTime();
-    return new this(timestamp, undefined, 'g3n3s15-hash', 'Data');
+    return new this(timestamp, undefined, 'ae11ac95a4b30e1d01fb4e7843785c4929f80048366c8d7b56c6c59c5544114b', 'Data');
   }
 
   static mine(previousBlock, data) {
