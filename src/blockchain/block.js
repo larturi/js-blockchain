@@ -19,7 +19,7 @@ class Block {
   static get genesis() {
     const timestamp = (new Date(2000, 0, 1)).getTime();
     return new this(
-      timestamp, undefined, 'ccbc43ae39a917747b280d55ee918fa27069d03fc82e53f04b9fdc7dbfb2d482', 'Data', DIFFICULTY,
+      timestamp, undefined, 'ccbc43ae39a917747b280d55ee918fa27069d03fc82e53f04b9fdc7dbfb2d482', 'Data', 0, DIFFICULTY,
     );
   }
 

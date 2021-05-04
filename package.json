@@ -21,7 +21,8 @@
     "nodemon": "nodemon --exec yarn start",
     "lint": "eslint index.js src",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "miner": "babel-node miner.js"
   },
   "dependencies": {
     "crypto-js": "^4.0.0",
@@ -30,7 +31,7 @@
     "ws": "^7.4.5"
   },
   "jest": {
-    "silent": false,
+    "silent": true,
     "verbose": true,
     "testEnvironment": "node"
   }

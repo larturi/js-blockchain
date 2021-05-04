@@ -1,4 +1,4 @@
-import Block, { DIFFICULTY } from './block';
+import Block from './block';
 
 describe('Block', () => {
   let timestamp;
@@ -38,7 +38,7 @@ describe('Block', () => {
 
   it('use static hash()', () => {
     hash = Block.hash(timestamp, previousBlock, data, nonce);
-    const hashOutput = '586703d4580cb519307604b032fc08128937dde40bd93af98b480f5dfe854c40';
+    const hashOutput = '799009f70b7341998e792bfb83bcdd7b871d8feb5f3909bc60a5d5bfa232773c';
     expect(hash).toEqual(hashOutput);
   });
 
