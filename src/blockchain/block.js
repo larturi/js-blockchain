@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { SHA256 } from 'crypto-js';
+import genHash from '../modules/hash';
 import adjustDifficult from './modules/adjustDifficult';
 
 require('dotenv').config();
@@ -41,7 +41,7 @@ class Block {
   }
 
   static hash(timestamp, previousHash, data, nonce, difficulty) {
-    return SHA256(`${timestamp}${previousHash}${data}${nonce}${difficulty}`).toString();
+    return genHash(`${timestamp}${previousHash}${data}${nonce}${difficulty}`);
   }
 
   toString() {

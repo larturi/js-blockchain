@@ -36,4 +36,42 @@ describe('Transaction', () => {
       }).toThrowError(`Amount: ${amount} exceeds balance.`);
     });
   });
+
+  it('inputs the balance of the wallet', () => {
+    expect(transaction.input.amount).toEqual(wallet.balance);
+  });
+
+  it('inputs the sender address of the wallet', () => {
+    expect(transaction.input.address).toEqual(wallet.publicKey);
+  });
+
+  it('validates a valid transaction', () => {
+    expect(Transaction.verify(transaction)).toBe(true);
+  });
+
+  it('invalidates a corrupt transaction', () => {
+    transaction.outputs[0].amount = 10000;
+    expect(Transaction.verify(transaction)).toBe(false);
+  });
+
+  describe('and updating a transaction', () => {
+    let nextAmount;
+    let nextRecipient;
+
+    beforeEach(() => {
+      nextAmount = 3;
+      nextRecipient = 'next-address-example';
+      transaction = transaction.update(wallet, nextRecipient, nextAmount);
+    });
+
+    it('substracts the next amount from the sender wallet', () => {
+      const output = transaction.outputs.find(({ address }) => address === wallet.publicKey);
+      expect(output.amount).toEqual(wallet.balance - amount - nextAmount);
+    });
+
+    it('outputs an amount for the next recipient', () => {
+      const output = transaction.outputs.find(({ address }) => address === nextRecipient);
+      expect(output.amount).toEqual(nextAmount);
+    });
+  });
 });

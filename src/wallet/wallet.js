@@ -1,18 +1,17 @@
-/* eslint-disable new-cap */
-/* eslint-disable no-console */
-
-import Elliptic from 'elliptic';
+import { elliptic, hash } from '../modules';
 
 require('dotenv').config();
 
-const ec = new Elliptic.ec('secp256k1');
 const initialBalance = Number(process.env.INITIAL_BALANCE);
-
 class Wallet {
   constructor() {
     this.balance = initialBalance;
-    this.keyPair = ec.genKeyPair();
+    this.keyPair = elliptic.createKeyPair();
     this.publicKey = this.keyPair.getPublic().encode('hex');
+  }
+
+  sign(data) {
+    return this.keyPair.sign(hash(data));
   }
 
   toString() {
