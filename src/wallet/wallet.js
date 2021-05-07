@@ -1,17 +1,36 @@
 import { elliptic, hash } from '../modules';
+import Transaction from './transaction';
 
 require('dotenv').config();
 
 const initialBalance = Number(process.env.INITIAL_BALANCE);
 class Wallet {
-  constructor() {
+  constructor(blockchain) {
     this.balance = initialBalance;
     this.keyPair = elliptic.createKeyPair();
     this.publicKey = this.keyPair.getPublic().encode('hex');
+    this.blockchain = blockchain;
   }
 
   sign(data) {
     return this.keyPair.sign(hash(data));
+  }
+
+  createTransaction(recipientAddress, amount) {
+    const { balance, blockchain: { memoryPool } } = this;
+
+    if (amount > balance) throw Error(`Amount: ${amount} exceds current banalce: ${balance}`);
+
+    let tx = memoryPool.find(this.publicKey);
+
+    if (tx) {
+      tx.update(this, recipientAddress, amount);
+    } else {
+      tx = Transaction.create(this, recipientAddress, amount);
+      memoryPool.addOrUpdate(tx);
+    }
+
+    return tx;
   }
 
   toString() {
