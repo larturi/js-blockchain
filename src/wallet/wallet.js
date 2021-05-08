@@ -3,9 +3,8 @@ import Transaction from './transaction';
 
 require('dotenv').config();
 
-const initialBalance = Number(process.env.INITIAL_BALANCE);
 class Wallet {
-  constructor(blockchain) {
+  constructor(blockchain, initialBalance = Number(process.env.INITIAL_BALANCE)) {
     this.balance = initialBalance;
     this.keyPair = elliptic.createKeyPair();
     this.publicKey = this.keyPair.getPublic().encode('hex');
