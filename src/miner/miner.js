@@ -27,7 +27,7 @@ class Miner {
     p2pService.sync();
 
     // Limpio la MemoryPool
-    memoryPool.whipe();
+    memoryPool.wipe();
 
     // Doy aviso a los nodos para que limpien la MemoryPool
     p2pService.broadcast(MESSAGE.WIPE);

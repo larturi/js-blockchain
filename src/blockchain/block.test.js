@@ -36,12 +36,6 @@ describe('Block', () => {
     expect(block.data).toEqual(data);
   });
 
-  it('use static hash()', () => {
-    hash = Block.hash(timestamp, previousBlock, data, nonce);
-    const hashOutput = 'a5ffbb7c1e6e830ebeb9ad398693f4933a8547ab7c8bc59d9730bb5b2be76f92';
-    expect(hash).toEqual(hashOutput);
-  });
-
   it('use toString()', () => {
     const block = Block.mine(previousBlock, data);
     expect(typeof block.toString()).toEqual('string');
