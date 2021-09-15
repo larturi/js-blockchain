@@ -1,5 +1,5 @@
 
-# Creando una blockchain con js
+# Creando una Blockchain con JavaScript
 
 ## 🚀 Quick start
 
